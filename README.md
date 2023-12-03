@@ -11,7 +11,7 @@ Disco ball
 Use the command `./generate.ps1` and hope for the best.
 
 ## Generation:
-- Visual Studio solution in `./_build/Game.sln`.
+- Visual Studio solution in `./_build/Ball.sln`.
 - Binary executables in `./_build/Output/{mode}/Ball.exe`.
 
 # Dependencies:

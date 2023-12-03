@@ -1,4 +1,4 @@
-#include "IntroCommander.hpp"
+#include "AppCommander.hpp"
 #include <glm/gtx/string_cast.hpp>
 
 #include "../../Engine/Physx/Physx.hpp"
@@ -7,14 +7,14 @@ using namespace glm;
 
 
 // Instance
-IntroCommander::IntroCommander(std::shared_ptr<BaseScene> scene):
+AppCommander::AppCommander(std::shared_ptr<BaseScene> scene):
     BaseCommander(scene),
-    m_scene(std::dynamic_pointer_cast<IntroScene>(scene))
+    m_scene(std::dynamic_pointer_cast<AppScene>(scene))
 {
     // ..
 }
 
-void IntroCommander::_on_game_state_update(const CustomEvents::UpdateGameState& evt) {
+void AppCommander::_on_state_update(const CommonEvents::StateUpdated& evt) {
     float t = m_time.elapsed<Timer::millisecond>() / 1000.0f;
     Camera& cam = m_scene->camera();
 
@@ -26,8 +26,6 @@ void IntroCommander::_on_game_state_update(const CustomEvents::UpdateGameState& 
     else if (t < 5.0f) {
         cam.position += glm::vec3(cos(t) / 5.0f, sin(t) / 3.0f, sin(t) / 7.0f);
         cam.direction = 1.0f * glm::vec3(cos(t*0.3f), sin(t*0.5f), sin(t*0.7f));
-
-        m_scene->startText();
     }
     else if (t < 7.0f) {
         cam.position *= 0.95f;
@@ -37,15 +35,15 @@ void IntroCommander::_on_game_state_update(const CustomEvents::UpdateGameState& 
         m_scene->startBrownian();
     }
     else {
-        Event::Emit(CustomEvents::SceneEnded());
+        Event::Emit(CommonEvents::SceneEnded());
     }
 }
 
 // Events
-void IntroCommander::_on_key_pressed(const CustomEvents::KeyPressed& evt) {
+void AppCommander::_on_key_pressed(const CommonEvents::KeyPressed& evt) {
     // ..
 }
 
-void IntroCommander::_on_mouse_moved(const CustomEvents::MouseMoved& evt) {
+void AppCommander::_on_mouse_moved(const CommonEvents::MouseMoved& evt) {
     // ..
 }

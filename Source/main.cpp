@@ -1,33 +1,31 @@
 #include <string>
 
-#include "Game/GameManager.hpp"
 #include "Utils/Timer.hpp"
 #include "Engine/Physx/Physx.hpp"
 #include "Engine/Graphic/Window.hpp"
-#include "Engine/Sound/Player.hpp"
+#include "Application/ApplicationManager.hpp"
 
 // Options
 #ifdef _DEBUG
     const bool FullScreen = false;
     const int Width       = 1600;
     const int Height      = 900;
-    const SceneId StartId = SceneId::Intro;
+    const SceneId StartId = SceneId::App;
 #else
     const bool FullScreen = true;
     const int Width       = 1920;
     const int Height      = 1080;
-    const SceneId StartId = SceneId::Intro;
+    const SceneId StartId = SceneId::App;
 #endif
 
 // -- Entry point --
 int main() {
     // Alloc
-    SoundPlayer::Create();
-    GameManager::State gamestate;
-    Window window(Width, Height, "The Game", FullScreen);
+    ApplicationManager::Create();
+    Window window(Width, Height, "A Ball", FullScreen);
 
     // Main loop
-    gamestate.sceneId = StartId;
+    ApplicationManager::SetScene(StartId);
 
     Timer::Chronometre chrono;
     do {
@@ -43,44 +41,38 @@ int main() {
                     window.toggleFullScreen();
                     break;
 
-                // Change scene manually
-#ifdef _DEBUG
-                case GLFW_KEY_1: gamestate.sceneId = SceneId::Intro;     break;
-                case GLFW_KEY_2: gamestate.sceneId = SceneId::Slime;     break;
-                case GLFW_KEY_3: gamestate.sceneId = SceneId::Ending;    break;
-#endif
-
-                // Game inputs
+                // App control
                 default:
-                    gamestate.keyPressed.push(key);
+                    ApplicationManager::KeyPressed(key);
                     break;
             }
         }
 
-        // Read mouse
-        gamestate.mousePos = window.mousePos();
+        // Read mouse inputs
+        ApplicationManager::MousePos(window.mousePos());
 
         // Compute world
-        switch (GameManager::UpdateState(gamestate)) {
-            // Let's update
-            case GameManager::ActionCode::Ok:
+        switch (ApplicationManager::UpdateState()) 
+        {
+            // Continue normally
+            case ApplicationManager::ActionCode::Ok:
                 Physx::Compute(chrono.elapsed<Timer::microsecond>()/1000.0f);
                 chrono.tic();
                 break;
 
-            // Create (or change) the scene
-            case GameManager::ActionCode::Refresh:
-                GameManager::Refresh(window);
+            // Create or refresh scene
+            case ApplicationManager::ActionCode::Refresh:
+                ApplicationManager::Refresh(window);
                 break;
 
             // Stop
-            case GameManager::ActionCode::Close:
+            case ApplicationManager::ActionCode::Close:
                 window.close();
                 break;
         }
     } while (window.update());
 
     // Clean up
-    SoundPlayer::Destroy();
+    ApplicationManager::Destroy();
     return 0;
 }

@@ -10,7 +10,7 @@
 
 /*
 	How to use:
-	 - Create an XXEvent struct inherited from Event::_Base (or use one defined in CustomEvents.hpp)
+	 - Create an XXEvent struct inherited from Event::_Base (or use one defined in CommonEvents.hpp)
 	 - For the sender:
 		`Event::Emit(xx_event)` | xx_event: an instance of XXEvent
 	 - For the receiver, inherit the class `Event::Subscriber`, then, sub:
