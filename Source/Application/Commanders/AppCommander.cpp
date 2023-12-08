@@ -21,6 +21,8 @@ void AppCommander::_on_state_update(const CommonEvents::StateUpdated& evt) {
 // Events
 void AppCommander::_on_key_pressed(const CommonEvents::KeyPressed& evt) {
     // ..
+    if(evt.key == Key::Space)
+        m_scene->play = true;
 }
 
 void AppCommander::_on_mouse_moved(const CommonEvents::MouseMoved& evt) {

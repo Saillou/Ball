@@ -102,7 +102,7 @@ void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::ve
     }
 }
 
-void Sphere::drawBatch(int amount, const Camera& camera) {
+void Sphere::drawBatch(size_t amount, const Camera& camera) {
     for (auto& recipe : m_shaders) {
         recipe->
             use().
@@ -110,6 +110,6 @@ void Sphere::drawBatch(int amount, const Camera& camera) {
             set("Projection", camera.projection).
             set("CameraPos", camera.position);
 
-        ((SphereShape*)m_shape.get())->draw(amount);
+        ((SphereShape*)m_shape.get())->draw((int)amount);
     }
 }

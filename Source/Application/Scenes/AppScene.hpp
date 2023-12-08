@@ -14,6 +14,8 @@ struct AppScene : public BaseScene {
 
     void draw() override;
 
+    bool play = false;
+
 private:
 
     struct FireBall {
@@ -21,10 +23,13 @@ private:
         glm::vec3 pos;
 
         struct Particles {
+            const size_t amount;
+
             std::unique_ptr<Box> object;
             std::vector<glm::mat4> models;
             std::vector<glm::vec4> colors;
-            std::vector<glm::vec3> speeds;
+
+            std::vector<glm::vec4> speeds;
         } particles;
     } m_fireBall;
 };

@@ -113,7 +113,7 @@ void Box::draw(const Camera& camera, const glm::vec3& position, const glm::vec3&
     }
 }
 
-void Box::drawBatch(int amount, const Camera& camera) {
+void Box::drawBatch(size_t amount, const Camera& camera) {
     for (auto& recipe : m_shaders) {
         recipe->
             use().
@@ -121,6 +121,6 @@ void Box::drawBatch(int amount, const Camera& camera) {
             set("Projection",   camera.projection).
             set("CameraPos",    camera.position);
 
-        ((BoxShape*)m_shape.get())->draw(amount);
+        ((BoxShape*)m_shape.get())->draw((int)amount);
     }
 }

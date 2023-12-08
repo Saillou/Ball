@@ -27,22 +27,22 @@ void BaseShape::_bindArray() {
 
     m_ebo.bindData(m_indices);
 
-    // unbind arrays
     m_vbo_vertices.unbind();
     m_vbo_normals.unbind();
+
+    unbind();
 }
 
 void BaseShape::createBatch(const std::vector<glm::vec4>& colors, const std::vector<glm::mat4>& models) {
-    // Up data
-    updateBatch(colors, models);
-
     bind();
 
+    m_colors.bindData(colors);
     glVertexAttribPointer(m_current_attrib_id, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
     glEnableVertexAttribArray(m_current_attrib_id);
     glVertexAttribDivisor(m_current_attrib_id, 1);
     m_current_attrib_id++;
 
+    m_instances.bindData(models);
     for (int i = 0; i < 4; i++) {
         glEnableVertexAttribArray(m_current_attrib_id);
         glVertexAttribPointer(m_current_attrib_id, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(i * sizeof(glm::vec4)));

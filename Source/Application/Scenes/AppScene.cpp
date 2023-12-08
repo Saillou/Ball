@@ -4,6 +4,13 @@
 #include <ctime>
 #include <random>
 
+// Random engine
+static std::default_random_engine gen;
+
+static std::uniform_real_distribution<float> dstr_pi(-glm::pi<float>(), +glm::pi<float>());
+static std::uniform_real_distribution<float> dstr_one(0.0f, 1.0f);
+static std::uniform_real_distribution<float> dstr_half(-0.5f, +0.5f);
+
 // -- Scene instance --
 AppScene::AppScene() :
     BaseScene(),
@@ -11,7 +18,8 @@ AppScene::AppScene() :
         std::make_unique<Sphere>(0.15f), 
         glm::vec3(0, 0, 0),
         { 
-            std::make_unique<Box>(glm::vec3(0.05f, 0.05f, 0.05f)) 
+            size_t(2'500),
+            std::make_unique<Box>(0.015f * glm::vec3(1.0f, 1.0f, 1.0f))
         }
     })
 {
@@ -21,23 +29,16 @@ AppScene::AppScene() :
     m_camera.fieldOfView = 45.0f;
 
     // - Generate batch parameters
-    const size_t n_particles = 2'500;
-
-    // Random engine
-    std::default_random_engine gen;
-    std::uniform_real_distribution<float> dstr_pi(-glm::pi<float>(), +glm::pi<float>());
-    std::uniform_real_distribution<float> dstr_one(0.0f, 1.0f);
-    std::uniform_real_distribution<float> dstr_half(-0.5f, +0.5f);
+    const glm::vec3 color(1.0f, 0.7f, 0.3f);
 
     // Define particles
-    m_fireBall.particles.models.resize(n_particles);
-    m_fireBall.particles.speeds.resize(n_particles);
-    m_fireBall.particles.colors.resize(n_particles);
+    m_fireBall.particles.models.resize(m_fireBall.particles.amount);
+    m_fireBall.particles.speeds.resize(m_fireBall.particles.amount);
+    m_fireBall.particles.colors.resize(m_fireBall.particles.amount);
 
     std::generate(m_fireBall.particles.models.begin(), m_fireBall.particles.models.end(), [&, particules_id = 0]() mutable -> glm::mat4
     {
-        // Create a grid (centered in 0)
-        const int SIZE = (int)sqrt(n_particles);
+        const int SIZE = (int)sqrt(m_fireBall.particles.amount);
         int x = particules_id % SIZE - SIZE / 2;
         int y = particules_id / SIZE - SIZE / 2;
         particules_id++;
@@ -48,14 +49,17 @@ AppScene::AppScene() :
         );
     });
 
-    std::generate(m_fireBall.particles.speeds.begin(), m_fireBall.particles.speeds.end(), [&]() -> glm::vec3
+    std::generate(m_fireBall.particles.colors.begin(), m_fireBall.particles.colors.end(), [&, particules_id = 0]() mutable -> glm::vec4
     {
-        return glm::vec3(0.0f, 0.0f, 0.0f);
+        particules_id++;
+        float ratio = particules_id / float(m_fireBall.particles.amount);
+
+        return glm::min(glm::vec4(1.5f * ratio * color, 0.0f) + glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     });
-    
-    std::generate(m_fireBall.particles.colors.begin(), m_fireBall.particles.colors.end(), [&]() -> glm::vec4
+
+    std::generate(m_fireBall.particles.speeds.begin(), m_fireBall.particles.speeds.end(), [&]() -> glm::vec4
     {
-        return glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+        return glm::vec4(dstr_half(gen) / 2.0f, 0.0f, dstr_one(gen), 1.0f - dstr_one(gen) / 10.0f - 1e-2f);
     });
 
     // Create batch
@@ -65,11 +69,14 @@ AppScene::AppScene() :
     );
 
     // Cook
-    m_fireBall.object->addRecipe(Cookable::CookType::Solid, glm::vec4(1.0f, 0.7f, 0.3f, 1.0f));
+    m_fireBall.object->addRecipe(Cookable::CookType::Solid, glm::vec4(color, 1.0f));
     m_fireBall.particles.object->addRecipe(Cookable::CookType::Batch);
 }
 
 void AppScene::draw() {
+    if (!play)
+        return;
+
     static float t = 0.0f;
     const float dt = 0.016f;
 
@@ -79,12 +86,31 @@ void AppScene::draw() {
     // Particles
     {
         // Move
-        for (size_t i = 0; i < m_fireBall.particles.models.size(); i++)
+        for (int particules_id = 0; particules_id < m_fireBall.particles.amount; particules_id++)
         {
-            glm::vec3& speed = m_fireBall.particles.speeds[i];
-            glm::mat4& model = m_fireBall.particles.models[i];
+            glm::vec4& speed = m_fireBall.particles.speeds[particules_id];
+            glm::mat4& model = m_fireBall.particles.models[particules_id];
 
-            model = glm::translate(model, m_fireBall.pos + dt * speed);
+            if (model[0][0] < 1e-2f || model[1][1] < 1e-2f || model[2][2] < 1e-2f) 
+            {
+                const int SIZE = (int)sqrt(m_fireBall.particles.amount);
+                int x = particules_id % SIZE - SIZE / 2;
+                int y = particules_id / SIZE - SIZE / 2;
+
+                model = glm::translate(
+                    glm::mat4(1.0f),
+                    glm::vec3(x * 0.05f, 0.0f, y * 0.05f)
+                );
+
+                speed = glm::vec4(dstr_half(gen) / 2.0f, 0.0f, dstr_one(gen), 1.0f - dstr_one(gen) / 10.0f - 1e-2f);
+            }
+            else {
+                model = glm::scale(
+                    glm::translate(
+                        model, 
+                        m_fireBall.pos + dt * glm::vec3(speed)), speed.a * glm::vec3(1, 1, 1)
+                );
+            }
         }
 
         // Update
@@ -94,7 +120,7 @@ void AppScene::draw() {
         );
 
         // Draw
-        m_fireBall.particles.object->drawBatch((int)m_fireBall.particles.models.size(), m_camera);
+        m_fireBall.particles.object->drawBatch(m_fireBall.particles.amount, m_camera);
     }
 
     // Update
