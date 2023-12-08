@@ -117,10 +117,10 @@ void Window::_init(const char* title) {
     glfwInit();
 
     // OpenGL >= 4.0 (for tesselation)
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-    glfwWindowHint(GLFW_SAMPLES, 32); // AA
+    glfwWindowHint(GLFW_SAMPLES, 16); // AA
 
     m_window = glfwCreateWindow(m_width, m_height, title, m_is_fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
     if (!m_window)

@@ -5,7 +5,9 @@ BaseShape::BaseShape() :
     m_vbo_vertices(GL_ARRAY_BUFFER), 
     m_vbo_normals(GL_ARRAY_BUFFER), 
     m_ebo(GL_ELEMENT_ARRAY_BUFFER),
-    m_instances(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW)
+    m_colors(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
+    m_instances(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
+    m_current_attrib_id(0)
 {
     // ..
 }
@@ -14,12 +16,14 @@ void BaseShape::_bindArray() {
     bind();
 
     m_vbo_vertices.bindData(m_vertices);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(m_current_attrib_id, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(m_current_attrib_id);
+    m_current_attrib_id++;
 
     m_vbo_normals.bindData(m_normals);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(m_current_attrib_id, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(m_current_attrib_id);
+    m_current_attrib_id++;
 
     m_ebo.bindData(m_indices);
 
@@ -28,32 +32,30 @@ void BaseShape::_bindArray() {
     m_vbo_normals.unbind();
 }
 
-void BaseShape::createBatch(const std::vector<glm::mat4>& models) {
-    m_instances.bindData(models);
+void BaseShape::createBatch(const std::vector<glm::vec4>& colors, const std::vector<glm::mat4>& models) {
+    // Up data
+    updateBatch(colors, models);
 
     bind();
 
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    glVertexAttribPointer(m_current_attrib_id, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(m_current_attrib_id);
+    glVertexAttribDivisor(m_current_attrib_id, 1);
+    m_current_attrib_id++;
 
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    for (int i = 0; i < 4; i++) {
+        glEnableVertexAttribArray(m_current_attrib_id);
+        glVertexAttribPointer(m_current_attrib_id, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(i * sizeof(glm::vec4)));
+        glVertexAttribDivisor(m_current_attrib_id, 1);
 
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-
-    glEnableVertexAttribArray(5);
-    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
-
-    glVertexAttribDivisor(2, 1);
-    glVertexAttribDivisor(3, 1);
-    glVertexAttribDivisor(4, 1);
-    glVertexAttribDivisor(5, 1);
+        m_current_attrib_id++;
+    }
 
     unbind();
 }
 
-void BaseShape::updateBatch(const std::vector<glm::mat4>& models) {
+void BaseShape::updateBatch(const std::vector<glm::vec4>& colors, const std::vector<glm::mat4>& models) {
+    m_colors.bindData(colors);
     m_instances.bindData(models);
 }
 

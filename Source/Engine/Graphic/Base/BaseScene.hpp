@@ -22,6 +22,7 @@ struct BaseScene {
 
 protected:
     virtual void _init_gl_config(); // Override this to enable or disable some opengl functionalities. (eg PENCIL_TEST)
+    virtual void _update_camera();
 
     // Members
     Camera m_camera = {};

@@ -1,25 +1,30 @@
 #pragma once
 
-#include "../../Engine/Graphic/Base/BaseScene.hpp"
-
 #include <vector>
 #include <memory>
-#include "Objects/SphereBatch.hpp"
+
+#include "../../Engine/Graphic/Base/BaseScene.hpp"
+
+#include "Objects/Sphere.hpp"
+#include "Objects/Box.hpp"
 
 // -- Scene --
 struct AppScene : public BaseScene {
     AppScene();
 
     void draw() override;
-    void resize(int width, int height) override;
-
-    void startBrownian() {
-        m_anime_brownian = true;
-    }
 
 private:
-    void _update_camera();
 
-    SphereBatch m_decors;
-    bool m_anime_brownian = false;
+    struct FireBall {
+        std::unique_ptr<Sphere> object;
+        glm::vec3 pos;
+
+        struct Particles {
+            std::unique_ptr<Box> object;
+            std::vector<glm::mat4> models;
+            std::vector<glm::vec4> colors;
+            std::vector<glm::vec3> speeds;
+        } particles;
+    } m_fireBall;
 };

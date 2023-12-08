@@ -14,8 +14,8 @@ public:
 	BaseShape();
 	virtual ~BaseShape() = default;
 
-	void createBatch(const std::vector<glm::mat4>& models);
-	void updateBatch(const std::vector<glm::mat4>& models);
+	void createBatch(const std::vector<glm::vec4>& colors, const std::vector<glm::mat4>& models);
+	void updateBatch(const std::vector<glm::vec4>& colors, const std::vector<glm::mat4>& models);
 
 	virtual void bind();
 	virtual void unbind();
@@ -44,8 +44,11 @@ protected:
 	Buffer m_vbo_vertices;
 	Buffer m_vbo_normals;
 	Buffer m_ebo;
+
+	Buffer m_colors;
 	Buffer m_instances;
 
+	unsigned int m_current_attrib_id;
 	std::vector<unsigned int> m_indices;
 	std::vector<float> m_vertices;
 	std::vector<float> m_normals;

@@ -12,7 +12,7 @@ struct Camera {
 
     glm::vec3 position  = {};
     glm::vec3 direction = {};
-    float fieldOfView   = 0.0f;
+    float fieldOfView   = 30.0f;
 
     // Setters
     void lookAt(const glm::vec3& up);

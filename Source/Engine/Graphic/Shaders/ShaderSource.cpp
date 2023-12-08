@@ -53,7 +53,7 @@ ShaderSource& ShaderSource::add_func(const std::string& type, const std::string&
     ss << code << "\n";
     ss << "} \n";
 
-    layouts.push_back(ss.str());
+    functions.push_back(ss.str());
     return *this;
 }
 
@@ -61,19 +61,19 @@ std::string ShaderSource::str() const {
     std::stringstream ss;
 
     // version
-    ss << "#version 410\n";
+    ss << "#version 330\n";
 
     // structs
     for (const auto& struc : structs)
         ss << struc;
 
     // layouts
-    for (const auto& func : functions)
-        ss << func;
-
-    // functions
     for (const auto& layout : layouts)
         ss << layout;
+
+    // functions
+    for (const auto& func : functions)
+        ss << func;
 
     // ending
     ss << "\n\0";

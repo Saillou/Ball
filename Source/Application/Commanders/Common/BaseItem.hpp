@@ -5,7 +5,6 @@
 
 #include "../../../Utils/Timer.hpp"
 #include "../../../Engine/Physx/Physx.hpp"
-#include "../../../Engine/Graphic/Base/BaseScene.hpp"
 
 // ------------ Base ------------
 class BaseItem {

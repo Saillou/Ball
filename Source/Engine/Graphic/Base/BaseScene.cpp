@@ -16,6 +16,8 @@ void BaseScene::draw() {
 void BaseScene::resize(int width, int height) {
     m_width = width;
     m_height = height;
+
+    _update_camera();
 }
 
 void BaseScene::_init_gl_config() {
@@ -24,6 +26,16 @@ void BaseScene::_init_gl_config() {
     glEnable(GL_PROGRAM_POINT_SIZE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_MULTISAMPLE);
+}
+
+void BaseScene::_update_camera() {
+    if (m_height == 0)
+        return;
+
+    float aspect = (float)m_width / m_height;
+
+    m_camera.lookAt(glm::vec3(0, 0, 1));
+    m_camera.usePerspective(aspect);
 }
 
 int BaseScene::width() const {

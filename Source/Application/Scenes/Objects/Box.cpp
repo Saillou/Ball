@@ -113,21 +113,13 @@ void Box::draw(const Camera& camera, const glm::vec3& position, const glm::vec3&
     }
 }
 
-void Box::drawBatch(int amount, const Camera& camera, const std::vector<std::unique_ptr<Light>>& lights) {
+void Box::drawBatch(int amount, const Camera& camera) {
     for (auto& recipe : m_shaders) {
         recipe->
             use().
             set("View",         camera.modelview).
             set("Projection",   camera.projection).
-            set("CameraPos",    camera.position).
-            set("LightPos",     glm::vec3(0, 0, 0)).
-            set("LightColor",   glm::vec4(0, 0, 0, 0));
-
-        if (!lights.empty()) {
-            recipe->
-                set("LightPos", lights[0]->position).
-                set("LightColor", lights[0]->color);
-        }
+            set("CameraPos",    camera.position);
 
         ((BoxShape*)m_shape.get())->draw(amount);
     }
