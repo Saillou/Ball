@@ -1,6 +1,7 @@
 #include "ApplicationManager.hpp"
 
 #include "Commanders/AppCommander.hpp"
+#include "Commanders/BloomCommander.hpp"
 #include "Commanders/FireCommander.hpp"
 
 #include "../Engine/Sound/Player.hpp"
@@ -114,6 +115,9 @@ void ApplicationManager::Refresh(Window& window) {
 			case SceneId::App:
 				return std::make_shared<AppScene>();
 
+			case SceneId::Bloom:
+				return std::make_unique<BloomScene>();
+
 			case SceneId::Fire:
 				return std::make_unique<FireScene>();
 
@@ -128,6 +132,9 @@ void ApplicationManager::Refresh(Window& window) {
 		{
 			case SceneId::App:
 				return std::make_unique<AppCommander>(window.scene());
+
+			case SceneId::Bloom:
+				return std::make_unique<BloomCommander>(window.scene());
 
 			case SceneId::Fire:
 				return std::make_unique<FireCommander>(window.scene());

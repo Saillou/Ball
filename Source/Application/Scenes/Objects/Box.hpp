@@ -16,15 +16,15 @@ struct Box : public Cookable
     Box(const glm::vec3& dims);
     virtual ~Box() = default;
 
-    void bind();
-    void unbind();
-
-    void draw(const Camera& camera, const glm::vec3& position = {}, const glm::vec3& orientation = {}, const std::vector<std::unique_ptr<Light>>& lights = {});
+    void draw(const Camera& camera, const glm::vec3& position = {}, const glm::vec3& orientation = {}, const std::vector<Light>& lights = {});
     void drawBatch(size_t amount, const Camera& camera);
 
     std::shared_ptr<BaseShape> shape();
 
 private:
+    void bind();
+    void unbind();
+
     // Members
     std::shared_ptr<BaseShape> m_shape;
 };

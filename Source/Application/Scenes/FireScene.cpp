@@ -6,9 +6,9 @@
 #include <array>
 
 // Random engine
-const size_t WIDTH = 300;
-const size_t HEIGHT = 200;
-const float PIX_SIZE = 0.015f;
+const size_t WIDTH = 150;
+const size_t HEIGHT = 100;
+const float PIX_SIZE = 0.007f;
 
 static std::default_random_engine gen;
 
@@ -102,7 +102,7 @@ FireScene::FireScene() :
     })
 {
     // Camera
-    m_camera.position    = glm::vec3(0.0f, -10.0f, 0.0f);
+    m_camera.position    = glm::vec3(0.0f, -3.0f, 0.0f);
     m_camera.direction   = glm::vec3(0.0f, 0.0, 0.0f);
     m_camera.fieldOfView = 45.0f;
 
@@ -147,13 +147,8 @@ FireScene::FireScene() :
 }
 
 void FireScene::draw() {
-    if (!start)
-        return;
-
     static float t = 0.0f;
     const float dt = 0.016f;
-
-    m_fireBall.pos = glm::vec3(cos(t), 0, 0);
 
     // Particles
     {
@@ -209,6 +204,10 @@ void FireScene::draw() {
     t += dt;
 }
 
+void FireScene::move_ball(const glm::vec3& delta_position) {
+    m_fireBall.pos += delta_position;
+}
+
 glm::vec4 FireScene::_getBrightness(float ratio) const {
     return glm::min (
         glm::vec4(1.5f * ratio * _getColor()) + glm::vec4(1,0,0,0),
@@ -233,5 +232,5 @@ glm::vec3 FireScene::_getParticulePos(size_t particule_id) const {
 }
 
 glm::vec4 FireScene::_getRandomSpeed() const {
-    return glm::vec4(dstr_half(gen) / 2.0f, 0.0f, dstr_one(gen), 1.0f - dstr_one(gen) / 10.0f - 1e-2f);
+    return glm::vec4(dstr_half(gen) / 2.0f, 0.0f, dstr_one(gen) / 4.0f, 1.0f - dstr_one(gen) / 10.0f - 1e-2f);
 }

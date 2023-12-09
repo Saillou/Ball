@@ -18,7 +18,7 @@ struct BaseScene {
     int width() const;
     int height() const;
     Camera& camera();
-    std::vector<std::unique_ptr<Light>>& lights();
+    std::vector<Light>& lights();
 
 protected:
     virtual void _init_gl_config(); // Override this to enable or disable some opengl functionalities. (eg PENCIL_TEST)
@@ -26,7 +26,7 @@ protected:
 
     // Members
     Camera m_camera = {};
-    std::vector<std::unique_ptr<Light>> m_lights;
+    std::vector<Light> m_lights;
 
     int m_width  = 0;
     int m_height = 0;

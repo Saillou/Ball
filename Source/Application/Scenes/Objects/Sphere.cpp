@@ -75,7 +75,7 @@ std::shared_ptr<BaseShape> Sphere::shape() {
     return m_shape;
 }
 
-void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::vec3& orientation, const std::vector<std::unique_ptr<Light>>& lights) {
+void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::vec3& orientation, const std::vector<Light>& lights) {
     glm::mat4 model(1.0f);
     model = glm::translate(model, position);
     model = glm::rotate(model, orientation.x, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -83,7 +83,7 @@ void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::ve
     model = glm::rotate(model, orientation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
     for (auto& recipe: m_shaders) {
-        recipe->
+        recipe.second->
             use().
             set("Model",        model).
             set("View",         camera.modelview).
@@ -93,9 +93,9 @@ void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::ve
             set("LightColor",   glm::vec4(0, 0, 0, 0));
 
         if(!lights.empty()) {
-            recipe->
-                set("LightPos",   lights[0]->position).
-                set("LightColor", lights[0]->color);
+            recipe.second->
+                set("LightPos",   lights[0].position).
+                set("LightColor", lights[0].color);
         }
 
         ((SphereShape*)m_shape.get())->draw();
@@ -104,11 +104,11 @@ void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::ve
 
 void Sphere::drawBatch(size_t amount, const Camera& camera) {
     for (auto& recipe : m_shaders) {
-        recipe->
+        recipe.second->
             use().
-            set("View", camera.modelview).
-            set("Projection", camera.projection).
-            set("CameraPos", camera.position);
+            set("View",         camera.modelview).
+            set("Projection",   camera.projection).
+            set("CameraPos",    camera.position);
 
         ((SphereShape*)m_shape.get())->draw((int)amount);
     }

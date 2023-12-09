@@ -47,6 +47,6 @@ int BaseScene::height() const {
 Camera& BaseScene::camera() {
     return m_camera;
 }
-std::vector<std::unique_ptr<Light>>& BaseScene::lights() {
+std::vector<Light>& BaseScene::lights() {
     return m_lights;
 }

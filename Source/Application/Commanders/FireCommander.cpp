@@ -20,9 +20,24 @@ void FireCommander::_on_state_update(const CommonEvents::StateUpdated& evt) {
 
 // Events
 void FireCommander::_on_key_pressed(const CommonEvents::KeyPressed& evt) {
-    // ..
-    if (evt.key == Key::Space)
-        m_scene->start = true;
+    switch (evt.key) 
+    {
+    case Key::ArrowUp:
+        m_scene->move_ball(glm::vec3(0, 0, +0.01f));
+        break;
+
+    case Key::ArrowDown:
+        m_scene->move_ball(glm::vec3(0, 0, -0.01f));
+        break;
+
+    case Key::ArrowRight:
+        m_scene->move_ball(glm::vec3(+0.01f, 0, 0));
+        break;
+
+    case Key::ArrowLeft:
+        m_scene->move_ball(glm::vec3(-0.01f, 0, 0));
+        break;
+    }
 }
 
 void FireCommander::_on_mouse_moved(const CommonEvents::MouseMoved& evt) {

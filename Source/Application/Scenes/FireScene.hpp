@@ -13,8 +13,7 @@ struct FireScene : public BaseScene {
     FireScene();
 
     void draw() override;
-
-    bool start = false;
+    void move_ball(const glm::vec3& delta_position);
 
 private:
 

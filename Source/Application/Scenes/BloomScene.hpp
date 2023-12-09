@@ -15,5 +15,6 @@ struct BloomScene : public BaseScene {
     void draw() override;
 
 private:
-
+    Sphere ball_model;
+    Sphere light_model;
 };

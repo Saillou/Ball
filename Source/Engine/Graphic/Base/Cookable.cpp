@@ -4,8 +4,8 @@
 
 // - Recipes
 Cookable* Cookable::addRecipe(const CookType& type) {
-    m_shaders.push_back(std::make_unique<Shader>());
-    UShader& recipe = m_shaders.back();
+    m_shaders[type] = std::make_unique<Shader>();
+    UShader& recipe = m_shaders[type];
 
     switch (type) {
     case CookType::Solid:
@@ -29,9 +29,13 @@ Cookable* Cookable::addRecipe(const CookType& type, const glm::vec4& color) {
     addRecipe(type);
 
     // Set uniforms
-    m_shaders.back()->use().set("color", color);
+    m_shaders[type]->use().set("color", color);
 
     return this;
+}
+
+UShader& Cookable::get(const CookType& type) {
+    return m_shaders[type];
 }
 
 // - Shaders
