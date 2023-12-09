@@ -10,7 +10,7 @@
 // Data
 enum SceneId {
     None = 0,
-    App, Fire
+    App, Fire, Bloom
 };
 
 // Singleton

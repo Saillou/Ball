@@ -10,12 +10,12 @@
     const bool FullScreen = false;
     const int Width       = 1600;
     const int Height      = 900;
-    const SceneId StartId = SceneId::App;
+    const SceneId StartId = SceneId::Bloom;
 #else
     const bool FullScreen = true;
     const int Width       = 1920;
     const int Height      = 1080;
-    const SceneId StartId = SceneId::App;
+    const SceneId StartId = SceneId::Bloom;
 #endif
 
 // -- Entry point --
