@@ -18,7 +18,7 @@ AppScene::AppScene() :
         std::make_unique<Sphere>(0.15f), 
         glm::vec3(0, 0, 0),
         { 
-            size_t(2'500),
+            size_t(2500),
             std::make_unique<Box>(0.015f * glm::vec3(1.0f, 1.0f, 1.0f))
         }
     })
@@ -74,9 +74,6 @@ AppScene::AppScene() :
 }
 
 void AppScene::draw() {
-    if (!play)
-        return;
-
     static float t = 0.0f;
     const float dt = 0.016f;
 
@@ -91,7 +88,7 @@ void AppScene::draw() {
             glm::vec4& speed = m_fireBall.particles.speeds[particules_id];
             glm::mat4& model = m_fireBall.particles.models[particules_id];
 
-            if (model[0][0] < 1e-2f || model[1][1] < 1e-2f || model[2][2] < 1e-2f) 
+            if (model[0][0] < 1e-2f || model[1][1] < 1e-2f || model[2][2] < 1e-2f || redraw)
             {
                 const int SIZE = (int)sqrt(m_fireBall.particles.amount);
                 int x = particules_id % SIZE - SIZE / 2;
@@ -125,4 +122,5 @@ void AppScene::draw() {
 
     // Update
     t += dt;
+    redraw = false;
 }

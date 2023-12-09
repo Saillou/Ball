@@ -9,17 +9,21 @@
 #include "Objects/Box.hpp"
 
 // -- Scene --
-struct AppScene : public BaseScene {
-    AppScene();
+struct FireScene : public BaseScene {
+    FireScene();
 
     void draw() override;
 
-    bool redraw = false;
+    bool start = false;
 
 private:
 
+    glm::vec4 _getBrightness(float ratio) const;
+    glm::vec4 _getColor() const;
+    glm::vec3 _getParticulePos(size_t particule_id) const;
+    glm::vec4 _getRandomSpeed() const;
+
     struct FireBall {
-        std::unique_ptr<Sphere> object;
         glm::vec3 pos;
 
         struct Particles {
