@@ -119,8 +119,8 @@ void ApplicationManager::Refresh(Window& window) {
 
 			default: 
 				return std::make_shared<BaseScene>();
-		}})()
-	);
+		}
+	})());
 
 	// Change commander
 	s_appManager->_commander = ([&]() -> std::unique_ptr<BaseCommander> {
