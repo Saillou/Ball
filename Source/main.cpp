@@ -10,12 +10,12 @@
     const bool FullScreen = false;
     const int Width       = 1600;
     const int Height      = 900;
-    const SceneId StartId = SceneId::Fire;
+    const SceneId StartId = SceneId::App;
 #else
     const bool FullScreen = true;
     const int Width       = 1920;
     const int Height      = 1080;
-    const SceneId StartId = SceneId::Fire;
+    const SceneId StartId = SceneId::Bloom;
 #endif
 
 // -- Entry point --
@@ -35,6 +35,18 @@ int main() {
                 // Window control
                 case GLFW_KEY_ESCAPE: 
                     window.close(); 
+                    break;
+
+                case GLFW_KEY_1:
+                    ApplicationManager::SetScene(SceneId::App);
+                    break;
+
+                case GLFW_KEY_2:
+                    ApplicationManager::SetScene(SceneId::Fire);
+                    break;
+
+                case GLFW_KEY_3:
+                    ApplicationManager::SetScene(SceneId::Bloom);
                     break;
 
                 case GLFW_KEY_F11:
