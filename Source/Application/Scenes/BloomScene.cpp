@@ -1,10 +1,13 @@
 #include "BloomScene.hpp"
 
+#include <iostream>
+
 // -- Scene instance --
 BloomScene::BloomScene() :
     BaseScene(),
     ball_model(0.25f),
-    light_model(0.07f)
+    light_model(0.07f),
+    framebuffer(m_width, m_height)
 {
     // Camera
     m_camera.position    = glm::vec3(0.0f, -10.0f, 0.0f);
@@ -33,4 +36,8 @@ void BloomScene::draw() {
         light_model.get(Cookable::CookType::Solid)->set("color", light.color);
         light_model.draw(m_camera, light.position);
     }
+}
+
+void BloomScene::_onResize() {
+    framebuffer.resize(m_width, m_height);
 }

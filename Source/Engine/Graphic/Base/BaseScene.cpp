@@ -13,11 +13,17 @@ void BaseScene::draw() {
     // to be overrided
 }
 
+void BaseScene::_onResize() {
+    // to be overrided
+}
+
 void BaseScene::resize(int width, int height) {
     m_width = width;
     m_height = height;
 
     _update_camera();
+
+    _onResize();
 }
 
 void BaseScene::_init_gl_config() {

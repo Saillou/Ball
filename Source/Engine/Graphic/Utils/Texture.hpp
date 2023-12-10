@@ -4,7 +4,7 @@
 
 class Texture {
 public:
-	explicit Texture();
+	Texture(unsigned int width, unsigned int height);
 	virtual ~Texture();
 
 	Texture& operator=(const Texture&)	= delete;
@@ -12,7 +12,16 @@ public:
 	Texture(Texture&&)					= delete;
 
 	unsigned int getId() const;
+	unsigned int getWidth() const;
+	unsigned int getHeight() const;
+
+	void bind();
+	void unbind();
+
+	void resize(unsigned int width, unsigned int height);
 
 protected:
-	unsigned int m_bufferId;
+	unsigned int m_textureId;
+	unsigned int m_width;
+	unsigned int m_height;
 };

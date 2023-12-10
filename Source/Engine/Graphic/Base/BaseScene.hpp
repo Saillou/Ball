@@ -22,7 +22,8 @@ struct BaseScene {
 
 protected:
     virtual void _init_gl_config(); // Override this to enable or disable some opengl functionalities. (eg PENCIL_TEST)
-    virtual void _update_camera();
+    virtual void _update_camera();  // Override this if camera perspective isn't the default one.
+    virtual void _onResize();       // Override this to resize framebuffer or texture depending on the window size.
 
     // Members
     Camera m_camera = {};
