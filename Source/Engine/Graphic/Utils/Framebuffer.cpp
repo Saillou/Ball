@@ -9,7 +9,7 @@ Framebuffer::Framebuffer(unsigned int width, unsigned int height) :
 
 	bind();
 	glViewport(0, 0, width, height);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture_attached.getId(), 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture_attached.id(), 0);
 
 	_createRenderBufferObject(width, height);
 
@@ -20,12 +20,16 @@ Framebuffer::~Framebuffer() {
 	glDeleteFramebuffers(1, &m_framebufferId);
 }
 
-bool Framebuffer::isUsable() const {
+bool Framebuffer::usable() const {
 	return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 }
 
-unsigned int Framebuffer::getId() const {
+unsigned int Framebuffer::id() const {
 	return m_framebufferId;
+}
+
+unsigned int Framebuffer::textureId() const {
+	return m_texture_attached.id();
 }
 
 void Framebuffer::resize(unsigned int width, unsigned int height) {
@@ -39,12 +43,12 @@ void Framebuffer::resize(unsigned int width, unsigned int height) {
 	unbind();
 }
 
-unsigned int Framebuffer::getWidth() const {
-	return m_texture_attached.getWidth();
+unsigned int Framebuffer::width() const {
+	return m_texture_attached.width();
 }
 
-unsigned int Framebuffer::getHeight() const {
-	return m_texture_attached.getHeight();
+unsigned int Framebuffer::height() const {
+	return m_texture_attached.height();
 }
 
 void Framebuffer::bind() {
@@ -53,6 +57,11 @@ void Framebuffer::bind() {
 
 void Framebuffer::unbind() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void Framebuffer::clear() {
+	glClearColor(0.05f, 0.05f, 0.06f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Framebuffer::_createRenderBufferObject(unsigned int width, unsigned int height) {

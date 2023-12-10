@@ -28,6 +28,10 @@ BloomScene::BloomScene() :
 }
 
 void BloomScene::draw() {
+    // Choose draw target
+    framebuffer.bind();
+    framebuffer.clear();
+
     // Objects
     ball_model.draw(m_camera, {}, {}, m_lights);
 
@@ -36,6 +40,11 @@ void BloomScene::draw() {
         light_model.get(Cookable::CookType::Solid)->set("color", light.color);
         light_model.draw(m_camera, light.position);
     }
+
+    framebuffer.unbind();
+
+    // Basic quad render
+    BaseScene::drawQuad(framebuffer.id());
 }
 
 void BloomScene::_onResize() {

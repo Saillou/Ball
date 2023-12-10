@@ -116,7 +116,7 @@ void Window::_init(const char* title) {
     // Init GLFW
     glfwInit();
 
-    // OpenGL >= 4.0 (for tesselation)
+    // OpenGL 3.3 (for best ratio compatibility/features)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);

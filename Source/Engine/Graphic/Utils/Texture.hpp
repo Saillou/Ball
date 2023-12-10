@@ -11,9 +11,9 @@ public:
 	Texture(const Texture&)				= delete;
 	Texture(Texture&&)					= delete;
 
-	unsigned int getId() const;
-	unsigned int getWidth() const;
-	unsigned int getHeight() const;
+	unsigned int id() const;
+	unsigned int width() const;
+	unsigned int height() const;
 
 	void bind();
 	void unbind();

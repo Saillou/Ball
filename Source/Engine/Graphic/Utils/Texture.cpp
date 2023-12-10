@@ -17,15 +17,15 @@ Texture::~Texture() {
 	glDeleteTextures(1, &m_textureId);
 }
 
-unsigned int Texture::getId() const {
+unsigned int Texture::id() const {
 	return m_textureId;
 }
 
-unsigned int Texture::getWidth() const {
+unsigned int Texture::width() const {
 	return m_width;
 }
 
-unsigned int Texture::getHeight() const {
+unsigned int Texture::height() const {
 	return m_height;
 }
 

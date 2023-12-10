@@ -17,6 +17,30 @@ void BaseScene::_onResize() {
     // to be overrided
 }
 
+void BaseScene::drawQuad(unsigned int texture_id) {
+    glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
+
+    //static float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
+    //    // positions   // texCoords
+    //    -1.0f,  1.0f,  0.0f, 1.0f,
+    //    -1.0f, -1.0f,  0.0f, 0.0f,
+    //     1.0f, -1.0f,  1.0f, 0.0f,
+
+    //    -1.0f,  1.0f,  0.0f, 1.0f,
+    //     1.0f, -1.0f,  1.0f, 0.0f,
+    //     1.0f,  1.0f,  1.0f, 1.0f
+    //};
+
+    //screenShader.use();
+    //glBindVertexArray(quadVAO);
+
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    //glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glEnable(GL_DEPTH_TEST);
+}
+
 void BaseScene::resize(int width, int height) {
     m_width = width;
     m_height = height;

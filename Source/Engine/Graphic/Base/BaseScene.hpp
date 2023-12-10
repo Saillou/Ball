@@ -15,6 +15,10 @@ struct BaseScene {
     virtual void draw();                            // called by an instance of a `Window::update()`
     virtual void resize(int width, int height);     // called by an event `Window::resize()`
 
+    // utils
+    void drawQuad(unsigned int texture_id);
+
+    // getters
     int width() const;
     int height() const;
     Camera& camera();
