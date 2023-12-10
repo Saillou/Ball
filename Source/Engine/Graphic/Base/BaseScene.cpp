@@ -20,25 +20,10 @@ void BaseScene::_onResize() {
 void BaseScene::drawQuad(unsigned int texture_id) {
     glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
 
-    //static float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
-    //    // positions   // texCoords
-    //    -1.0f,  1.0f,  0.0f, 1.0f,
-    //    -1.0f, -1.0f,  0.0f, 0.0f,
-    //     1.0f, -1.0f,  1.0f, 0.0f,
+    m_quad.setTexture(texture_id);
+    m_quad.draw();
 
-    //    -1.0f,  1.0f,  0.0f, 1.0f,
-    //     1.0f, -1.0f,  1.0f, 0.0f,
-    //     1.0f,  1.0f,  1.0f, 1.0f
-    //};
-
-    //screenShader.use();
-    //glBindVertexArray(quadVAO);
-
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-
-    //glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST); // set back to original state.
 }
 
 void BaseScene::resize(int width, int height) {
@@ -79,4 +64,33 @@ Camera& BaseScene::camera() {
 }
 std::vector<Light>& BaseScene::lights() {
     return m_lights;
+}
+
+// - Quad -
+BaseScene::_Quad::_Quad() 
+{
+    // Vertices
+    using v3 = glm::vec3;
+
+    int iA = _addPoint(v3(-1.0f, +1.0f, 0));
+    int iB = _addPoint(v3(-1.0f, -1.0f, 0));
+    int iC = _addPoint(v3(+1.0f, -1.0f, 0));
+    int iD = _addPoint(v3(+1.0f, +1.0f, 0));
+
+    _addAsTriangle(iA, iB, iC);
+    _addAsTriangle(iC, iD, iA);
+
+    // Shader
+    addRecipe(CookType::Quad);
+}
+
+void BaseScene::_Quad::setTexture(unsigned int texture_id) {
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+}
+
+void BaseScene::_Quad::draw() {
+    //screenShader.use();
+    //glBindVertexArray(quadVAO);
+
+    //glDrawArrays(GL_TRIANGLES, 0, 6);
 }

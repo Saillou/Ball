@@ -26,7 +26,6 @@ public:
 	int verticesLength() const;
 	int normalsLength() const;
 
-
 protected:
 	virtual void _bindArray();
 

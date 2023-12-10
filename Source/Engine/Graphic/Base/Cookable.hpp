@@ -9,7 +9,7 @@
 struct Cookable : public Object {
     // Basic possibilities
     enum class CookType {
-        Solid, Batch
+        Solid, Quad, Batch
     };
 
     // Instance
@@ -22,7 +22,8 @@ struct Cookable : public Object {
 
 protected:
     virtual void _set_shader_batch(UShader& shader);
-    virtual void _set_shader_single(UShader& shader);
+    virtual void _set_shader_solid(UShader& shader);
+    virtual void _set_shader_quad(UShader& shader);
 
     // Members
     std::unordered_map<CookType, UShader> m_shaders;

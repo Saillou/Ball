@@ -9,7 +9,11 @@ Cookable* Cookable::addRecipe(const CookType& type) {
 
     switch (type) {
     case CookType::Solid:
-        _set_shader_single(recipe);
+        _set_shader_solid(recipe);
+        break;
+
+    case CookType::Quad:
+        _set_shader_quad(recipe);
         break;
 
     case CookType::Batch:
@@ -62,10 +66,8 @@ void Cookable::_set_shader_batch(UShader& shader) {
     
                 gl_Position = Projection * View * vec4(FragPos, 1.0);
             )_main_").str()
-        );
-
-    shader->
-        attachSource(GL_FRAGMENT_SHADER, ShaderSource{}
+        )
+        .attachSource(GL_FRAGMENT_SHADER, ShaderSource{}
             .add_var("in", "vec3", "FragPos")
             .add_var("in", "vec3", "Normal")
             .add_var("in", "vec4", "Color")
@@ -81,7 +83,7 @@ void Cookable::_set_shader_batch(UShader& shader) {
         );
 }
 
-void Cookable::_set_shader_single(UShader& shader) {
+void Cookable::_set_shader_solid(UShader& shader) {
     shader->
         attachSource(GL_VERTEX_SHADER, ShaderSource{}
             .add_var("in", "vec3", "aPos")
@@ -100,10 +102,8 @@ void Cookable::_set_shader_single(UShader& shader) {
     
                 gl_Position = Projection * View * vec4(FragPos, 1.0);
             )_main_").str()
-        );
-
-    shader->
-        attachSource(GL_FRAGMENT_SHADER, ShaderSource{}
+        )
+        .attachSource(GL_FRAGMENT_SHADER, ShaderSource{}
             .add_var("in", "vec3", "Normal")
             .add_var("in", "vec3", "FragPos")
 
@@ -141,6 +141,28 @@ void Cookable::_set_shader_single(UShader& shader) {
 
                 vec3 result = (ambient + diffuse + specular) * color.rgb;
                 FragColor = vec4(result, color.a);
+            )_main_").str()
+        );
+}
+
+void Cookable::_set_shader_quad(UShader& shader) {
+    shader->
+        attachSource(GL_VERTEX_SHADER, ShaderSource{}
+            .add_var("in", "vec3", "aPos")
+            .add_var("out", "vec2", "TexCoords")
+            .add_func("void", "main", "", R"_main_(
+                gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);
+                float tx = aPos.x > 0 ? 1.0 : 0.0;
+                float ty = aPos.y > 0 ? 1.0 : 0.0;
+                TexCoords = vec2(tx, ty);
+            )_main_").str()
+        )
+        .attachSource(GL_FRAGMENT_SHADER, ShaderSource{}
+            .add_var("in", "vec2", "TexCoords")
+            .add_var("uniform", "sampler2D", "screenTexture")
+            .add_var("out", "vec4", "FragColor")
+            .add_func("void", "main", "", R"_main_(
+                FragColor = texture(screenTexture, TexCoords);
             )_main_").str()
         );
 }

@@ -35,4 +35,14 @@ protected:
 
     int m_width  = 0;
     int m_height = 0;
+
+    struct _Quad : public Cookable, public BaseShape
+    {
+        _Quad();
+        ~_Quad() = default;
+
+        void draw() override;
+        void setTexture(unsigned int texture_id);
+
+    } m_quad;
 };
