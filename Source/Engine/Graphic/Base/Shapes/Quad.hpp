@@ -4,11 +4,11 @@
 #include "../Cookable.hpp"
 
 struct Quad :
-    public Cookable,
-    public BaseShape
+    public BaseShape,
+    public Cookable
 {
     Quad();
     ~Quad() = default;
 
-    void draw() override;
+    void draw();
 };

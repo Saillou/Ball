@@ -124,3 +124,13 @@ void BaseShape::_addAsQuad(unsigned int i0, unsigned int i1, unsigned int i2, un
     m_indices.push_back(i2);
     m_indices.push_back(i3);
 }
+
+void BaseShape::_createQuad(const glm::vec3& P0, const glm::vec3& P1, const glm::vec3& P2, const glm::vec3& P3, const glm::vec3& n) {
+    int i0 = _addPoint(P0, n);
+    int i1 = _addPoint(P1, n);
+    int i2 = _addPoint(P2, n);
+    int i3 = _addPoint(P3, n);
+
+    _addAsTriangle(i0, i1, i2);
+    _addAsTriangle(i2, i3, i0);
+};

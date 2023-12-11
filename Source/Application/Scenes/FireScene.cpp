@@ -136,7 +136,7 @@ FireScene::FireScene() :
 
 
     // Create batch
-    m_fireBall.particles.object->shape()->createBatch
+    m_fireBall.particles.object->createBatch
     (
         m_fireBall.particles.colors,
         m_fireBall.particles.models
@@ -194,7 +194,7 @@ void FireScene::draw() {
         }
 
         // Update
-        m_fireBall.particles.object->shape()->updateBatch
+        m_fireBall.particles.object->updateBatch
         (
             m_fireBall.particles.colors,
             m_fireBall.particles.models

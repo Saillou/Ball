@@ -17,8 +17,7 @@ struct AppScene : public BaseScene {
 
 private:
 
-    struct FireBall {
-        std::unique_ptr<Sphere> object;
+    struct FireGrid {
         glm::vec3 pos;
 
         struct Particles {
@@ -30,5 +29,5 @@ private:
 
             std::vector<glm::vec4> speeds;
         } particles;
-    } m_fireBall;
+    } m_fireGrid;
 };

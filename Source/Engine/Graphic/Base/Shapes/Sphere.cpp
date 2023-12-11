@@ -1,78 +1,44 @@
 #include "Sphere.hpp"
 
-// - Shape
-struct SphereShape : public BaseShape {
-    SphereShape(float radius) 
-    {
-        const unsigned int X_SEGMENTS = 32;
-        const unsigned int Y_SEGMENTS = 32;
-
-        for (unsigned int x = 0; x <= X_SEGMENTS; ++x) {
-            for (unsigned int y = 0; y <= Y_SEGMENTS; ++y) {
-                float xSegment = (float)x / (float)X_SEGMENTS;
-                float ySegment = (float)y / (float)Y_SEGMENTS;
-                
-                _addPoint(
-                    radius * std::cos(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()),
-                    radius * std::cos(ySegment * 1.0f * glm::pi<float>()),
-                    radius * std::sin(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()),
-
-                    radius * std::cos(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()),
-                    radius * std::cos(ySegment * 1.0f * glm::pi<float>()),
-                    radius * std::sin(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>())
-                );
-            }
-        }
-
-        for (unsigned int y = 0; y < Y_SEGMENTS; ++y) {
-            if (y%2 == 0) {
-                for (unsigned int x = 0; x <= X_SEGMENTS; ++x) {
-                    m_indices.push_back(y * (X_SEGMENTS + 1) + x);
-                    m_indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
-                }
-            }
-            else {
-                for (int x = X_SEGMENTS; x >= 0; --x) {
-                    m_indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
-                    m_indices.push_back(y * (X_SEGMENTS + 1) + x);
-                }
-            }
-        }
-
-        // Bind
-        _bindArray();
-    }
-
-    void draw() override {
-        bind();
-        glDrawElements(GL_TRIANGLE_STRIP, (int)m_indices.size(), GL_UNSIGNED_INT, 0);
-        unbind();
-    }
-
-    void draw(int amount) {
-        bind();
-        glDrawElementsInstanced(GL_TRIANGLE_STRIP, (int)m_indices.size(), GL_UNSIGNED_INT, 0, amount);
-        unbind();
-    }
-};
-
-// - Constructor
-Sphere::Sphere(float radius) :
-    m_shape(std::make_shared<SphereShape>(radius))
+Sphere::Sphere(float radius)
 {
-    // ..
-}
+    const unsigned int X_SEGMENTS = 32;
+    const unsigned int Y_SEGMENTS = 32;
 
-void Sphere::bind() {
-    m_shape->bind();
-}
+    for (unsigned int x = 0; x <= X_SEGMENTS; ++x) {
+        for (unsigned int y = 0; y <= Y_SEGMENTS; ++y) {
+            float xSegment = (float)x / (float)X_SEGMENTS;
+            float ySegment = (float)y / (float)Y_SEGMENTS;
 
-void Sphere::unbind() {
-    m_shape->unbind();
-}
+            _addPoint(
+                radius * std::cos(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()),
+                radius * std::cos(ySegment * 1.0f * glm::pi<float>()),
+                radius * std::sin(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()),
 
-std::shared_ptr<BaseShape> Sphere::shape() {
-    return m_shape;
+                radius * std::cos(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>()),
+                radius * std::cos(ySegment * 1.0f * glm::pi<float>()),
+                radius * std::sin(xSegment * 2.0f * glm::pi<float>()) * std::sin(ySegment * glm::pi<float>())
+            );
+        }
+    }
+
+    for (unsigned int y = 0; y < Y_SEGMENTS; ++y) {
+        if (y % 2 == 0) {
+            for (unsigned int x = 0; x <= X_SEGMENTS; ++x) {
+                m_indices.push_back(y * (X_SEGMENTS + 1) + x);
+                m_indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+            }
+        }
+        else {
+            for (int x = X_SEGMENTS; x >= 0; --x) {
+                m_indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+                m_indices.push_back(y * (X_SEGMENTS + 1) + x);
+            }
+        }
+    }
+
+    // Bind
+    _bindArray();
 }
 
 void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::vec3& orientation, const std::vector<Light>& lights) {
@@ -83,6 +49,7 @@ void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::ve
     model = glm::rotate(model, orientation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
     for (auto& recipe: m_shaders) {
+        // Setup uniforms
         recipe.second->
             use().
             set("Model",        model).
@@ -98,18 +65,25 @@ void Sphere::draw(const Camera& camera, const glm::vec3& position, const glm::ve
                 set("LightColor", lights[0].color);
         }
 
-        ((SphereShape*)m_shape.get())->draw();
+        // Draw
+        bind();
+        glDrawElements(GL_TRIANGLE_STRIP, (int)m_indices.size(), GL_UNSIGNED_INT, 0);
+        unbind();
     }
 }
 
 void Sphere::drawBatch(size_t amount, const Camera& camera) {
     for (auto& recipe : m_shaders) {
+        // Setup uniforms
         recipe.second->
             use().
             set("View",         camera.modelview).
             set("Projection",   camera.projection).
             set("CameraPos",    camera.position);
 
-        ((SphereShape*)m_shape.get())->draw((int)amount);
+        // Draw
+        bind();
+        glDrawElementsInstanced(GL_TRIANGLE_STRIP, (int)m_indices.size(), GL_UNSIGNED_INT, 0, (GLsizei)amount);
+        unbind();
     }
 }
