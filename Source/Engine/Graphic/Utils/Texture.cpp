@@ -45,7 +45,7 @@ void Texture::resize(unsigned int width, unsigned int height) {
 	bind();
 	switch (m_texture_type) {
 	case GL_TEXTURE_2D_MULTISAMPLE:
-		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGB, m_width, m_height, GL_TRUE);
+		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, GL_RGB, m_width, m_height, GL_TRUE);
 		break;
 
 	case GL_TEXTURE_2D:

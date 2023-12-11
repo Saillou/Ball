@@ -22,6 +22,20 @@ bool Framebuffer::CurrIsUsable() {
 	return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 }
 
+void Framebuffer::Blit(Framebuffer& src, Framebuffer& dst) {
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, src.id());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dst.id());
+
+	glBlitFramebuffer(
+		0, 0, src.width(), src.height(), 
+		0, 0, dst.width(), dst.height(), 
+		GL_COLOR_BUFFER_BIT, GL_NEAREST
+	);
+
+	src.unbind();
+	dst.unbind();
+}
+
 unsigned int Framebuffer::id() const {
 	return m_framebufferId;
 }
@@ -68,7 +82,7 @@ void Framebuffer::_createRenderBufferObject(unsigned int width, unsigned int hei
 	if(m_type == Unique)
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
 	else
-		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, width, height);
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 8, GL_DEPTH24_STENCIL8, width, height);
 
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_renderbufferId);
 }

@@ -19,6 +19,7 @@ public:
 	Framebuffer(Framebuffer&&)					= delete;
 
 	static bool CurrIsUsable();
+	static void Blit(Framebuffer& src, Framebuffer& dst);
 
 	unsigned int id() const;
 	Texture& texture();

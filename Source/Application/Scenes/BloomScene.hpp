@@ -18,5 +18,7 @@ struct BloomScene : public BaseScene {
 private:
     Sphere ball_model;
     Sphere light_model;
+
     Framebuffer framebuffer;
+    Framebuffer framebufferTmp;
 };
