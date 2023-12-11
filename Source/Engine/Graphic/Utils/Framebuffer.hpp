@@ -6,7 +6,12 @@
 
 class Framebuffer {
 public:
-	Framebuffer(unsigned int width, unsigned int height);
+	enum Type {
+		Unique,
+		Multisample
+	};
+
+	Framebuffer(Type type, unsigned int width, unsigned int height);
 	virtual ~Framebuffer();
 
 	Framebuffer& operator=(const Framebuffer&)	= delete;
@@ -27,6 +32,8 @@ public:
 	virtual void clear(); // override if use different background color or utils buffers
 
 protected:
+	const Type m_type;
+
 	unsigned int m_framebufferId;
 	unsigned int m_renderbufferId;
 	Texture m_texture_attached;

@@ -4,7 +4,7 @@
 
 class Texture {
 public:
-	Texture(unsigned int width, unsigned int height);
+	Texture(unsigned int width, unsigned int height, GLuint texture_type = GL_TEXTURE_2D);
 	virtual ~Texture();
 
 	Texture& operator=(const Texture&)	= delete;
@@ -24,4 +24,5 @@ protected:
 	unsigned int m_textureId;
 	unsigned int m_width;
 	unsigned int m_height;
+	GLuint m_texture_type;
 };
