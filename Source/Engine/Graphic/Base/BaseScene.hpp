@@ -2,7 +2,7 @@
 
 #include "../TextEngine.hpp"
 #include "../Camera.hpp"
-#include "../Utils/Texture.hpp"
+#include "../Utils/Framebuffer.hpp"
 
 #include "Light.hpp"
 #include "Cookable.hpp"
@@ -19,7 +19,7 @@ struct BaseScene {
     virtual void resize(int width, int height);     // called by an event `Window::resize()`
 
     // utils
-    void drawQuad(Texture& texture);
+    void drawFrame(Framebuffer& framebuffer);
 
     // getters
     int width() const;
@@ -39,5 +39,7 @@ protected:
     int m_width  = 0;
     int m_height = 0;
 
-    Quad m_quad;
+private:
+    Framebuffer _internalFrame;     // Used when drawing multisample frame
+    Quad _quad;
 };

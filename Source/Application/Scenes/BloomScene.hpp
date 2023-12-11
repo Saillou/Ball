@@ -20,5 +20,4 @@ private:
     Sphere light_model;
 
     Framebuffer framebuffer;
-    Framebuffer framebufferTmp;
 };

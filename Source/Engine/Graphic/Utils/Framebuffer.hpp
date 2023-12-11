@@ -11,7 +11,7 @@ public:
 		Multisample
 	};
 
-	Framebuffer(Type type, unsigned int width, unsigned int height);
+	Framebuffer(Type type, unsigned int width = 0, unsigned int height = 0);
 	virtual ~Framebuffer();
 
 	Framebuffer& operator=(const Framebuffer&)	= delete;
@@ -27,6 +27,7 @@ public:
 	void resize(unsigned int width, unsigned int height);
 	unsigned int width() const;
 	unsigned int height() const;
+	Type type() const;
 
 	void bind() const;
 	void unbind() const;

@@ -7,8 +7,7 @@ BloomScene::BloomScene() :
     BaseScene(),
     ball_model(0.25f),
     light_model(0.07f),
-    framebuffer(Framebuffer::Multisample, m_width, m_height),
-    framebufferTmp(Framebuffer::Unique, m_width, m_height)
+    framebuffer(Framebuffer::Multisample, m_width, m_height)
 {
     // Camera
     m_camera.position    = glm::vec3(0.0f, -10.0f, 0.0f);
@@ -43,13 +42,10 @@ void BloomScene::draw() {
     }
     framebuffer.unbind();
 
-    Framebuffer::Blit(framebuffer, framebufferTmp);
-
     BaseScene::clear();
-    BaseScene::drawQuad(framebufferTmp.texture());
+    BaseScene::drawFrame(framebuffer);
 }
 
 void BloomScene::_onResize() {
     framebuffer.resize(m_width, m_height);
-    framebufferTmp.resize(m_width, m_height);
 }

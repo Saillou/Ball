@@ -60,6 +60,10 @@ unsigned int Framebuffer::height() const {
 	return m_texture_attached.height();
 }
 
+Framebuffer::Type Framebuffer::type() const {
+	return m_type;
+}
+
 void Framebuffer::bind() const {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferId);
 }

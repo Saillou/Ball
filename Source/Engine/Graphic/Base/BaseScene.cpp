@@ -2,7 +2,9 @@
 
 #include <glad/glad.h>
 
-BaseScene::BaseScene() {
+BaseScene::BaseScene():
+    _internalFrame(Framebuffer::Unique)
+{
     _init_gl_config();
 }
 
@@ -23,11 +25,20 @@ void BaseScene::_onResize() {
     // to be overrided
 }
 
-void BaseScene::drawQuad(Texture& texture) {
+void BaseScene::drawFrame(Framebuffer& framebuffer) {
     glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
 
-    texture.bind();
-    m_quad.draw();
+    // Need to blit multisample to mono
+    if (framebuffer.type() == Framebuffer::Type::Multisample) {
+        _internalFrame.resize(framebuffer.width(), framebuffer.height());
+        Framebuffer::Blit(framebuffer, _internalFrame);
+        _internalFrame.texture().bind();
+    }
+    else {
+        framebuffer.texture().bind();
+    }
+
+    _quad.draw();
 
     glEnable(GL_DEPTH_TEST); // set back to original state.
 }
