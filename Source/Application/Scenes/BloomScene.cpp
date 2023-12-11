@@ -28,23 +28,22 @@ BloomScene::BloomScene() :
 }
 
 void BloomScene::draw() {
-    // Choose draw target
     framebuffer.bind();
     framebuffer.clear();
+    {
+        // Objects
+        ball_model.draw(m_camera, {}, {}, m_lights);
 
-    // Objects
-    ball_model.draw(m_camera, {}, {}, m_lights);
-
-    // Lights
-    for (auto& light : m_lights) {
-        light_model.get(Cookable::CookType::Solid)->set("color", light.color);
-        light_model.draw(m_camera, light.position);
+        // Lights
+        for (auto& light : m_lights) {
+            light_model.get(Cookable::CookType::Solid)->use().set("color", light.color);
+            light_model.draw(m_camera, light.position);
+        }
     }
-
     framebuffer.unbind();
 
-    // Basic quad render
-    BaseScene::drawQuad(framebuffer.id());
+    BaseScene::clear();
+    BaseScene::drawQuad(framebuffer.texture());
 }
 
 void BloomScene::_onResize() {

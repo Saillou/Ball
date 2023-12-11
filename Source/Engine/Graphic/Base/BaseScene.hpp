@@ -2,21 +2,24 @@
 
 #include "../TextEngine.hpp"
 #include "../Camera.hpp"
+#include "../Utils/Texture.hpp"
 
 #include "Light.hpp"
 #include "Cookable.hpp"
 #include "BaseShape.hpp"
+#include "Shapes/Quad.hpp"
 
 // Scene model
 struct BaseScene {
     BaseScene();
     virtual ~BaseScene();
 
+    virtual void clear();
     virtual void draw();                            // called by an instance of a `Window::update()`
     virtual void resize(int width, int height);     // called by an event `Window::resize()`
 
     // utils
-    void drawQuad(unsigned int texture_id);
+    void drawQuad(Texture& texture);
 
     // getters
     int width() const;
@@ -36,13 +39,5 @@ protected:
     int m_width  = 0;
     int m_height = 0;
 
-    struct _Quad : public Cookable, public BaseShape
-    {
-        _Quad();
-        ~_Quad() = default;
-
-        void draw() override;
-        void setTexture(unsigned int texture_id);
-
-    } m_quad;
+    Quad m_quad;
 };

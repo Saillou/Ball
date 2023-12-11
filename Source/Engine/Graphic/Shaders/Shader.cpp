@@ -68,8 +68,6 @@ unsigned int Shader::getId() const {
 }
 
 Shader& Shader::set(const std::string& name, float v) {
-    use();
-
     int varLoc = glGetUniformLocation(m_id, name.c_str());
     if (varLoc == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;
@@ -79,8 +77,6 @@ Shader& Shader::set(const std::string& name, float v) {
 }
 
 Shader& Shader::set(const std::string& name, int v) {
-    use();
-
     int varLoc = glGetUniformLocation(m_id, name.c_str());
     if (varLoc == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;
@@ -90,8 +86,6 @@ Shader& Shader::set(const std::string& name, int v) {
 }
 
 Shader& Shader::set(const std::string& name, const glm::vec3& vec) {
-    use();
-
     int varLoc = glGetUniformLocation(m_id, name.c_str());
     if (varLoc == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;
@@ -101,8 +95,6 @@ Shader& Shader::set(const std::string& name, const glm::vec3& vec) {
 }
 
 Shader& Shader::set(const std::string& name, const glm::vec4& vec) {
-    use();
-
     int varLoc = glGetUniformLocation(m_id, name.c_str());
     if (varLoc == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;
@@ -112,8 +104,6 @@ Shader& Shader::set(const std::string& name, const glm::vec4& vec) {
 }
 
 Shader& Shader::set(const std::string& name, const glm::mat3& mat) {
-    use();
-
     int varLoc = glGetUniformLocation(m_id, name.c_str());
     if (varLoc == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;
@@ -124,8 +114,6 @@ Shader& Shader::set(const std::string& name, const glm::mat3& mat) {
 }
 
 Shader& Shader::set(const std::string& name, const glm::mat4& mat) {
-    use();
-
     int varLoc = glGetUniformLocation(m_id, name.c_str());
     if (varLoc == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;
@@ -135,8 +123,6 @@ Shader& Shader::set(const std::string& name, const glm::mat4& mat) {
 }
 
 Shader& Shader::setBlock(const std::string& name, const int layout) {
-    use();
-
     int blockIndex = glGetUniformBlockIndex(m_id, name.c_str());
     if (blockIndex == -1)
         std::cerr << "[warning] Uniform location not found for `" << name << "`" << std::endl;

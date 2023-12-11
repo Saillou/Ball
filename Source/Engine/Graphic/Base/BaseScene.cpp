@@ -9,6 +9,12 @@ BaseScene::BaseScene() {
 BaseScene::~BaseScene() {
 }
 
+void BaseScene::clear() {
+    // Cleanup previous draws
+    glClearColor(0.05f, 0.05f, 0.06f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 void BaseScene::draw() {
     // to be overrided
 }
@@ -17,10 +23,10 @@ void BaseScene::_onResize() {
     // to be overrided
 }
 
-void BaseScene::drawQuad(unsigned int texture_id) {
+void BaseScene::drawQuad(Texture& texture) {
     glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
 
-    m_quad.setTexture(texture_id);
+    texture.bind();
     m_quad.draw();
 
     glEnable(GL_DEPTH_TEST); // set back to original state.
@@ -66,31 +72,3 @@ std::vector<Light>& BaseScene::lights() {
     return m_lights;
 }
 
-// - Quad -
-BaseScene::_Quad::_Quad() 
-{
-    // Vertices
-    using v3 = glm::vec3;
-
-    int iA = _addPoint(v3(-1.0f, +1.0f, 0));
-    int iB = _addPoint(v3(-1.0f, -1.0f, 0));
-    int iC = _addPoint(v3(+1.0f, -1.0f, 0));
-    int iD = _addPoint(v3(+1.0f, +1.0f, 0));
-
-    _addAsTriangle(iA, iB, iC);
-    _addAsTriangle(iC, iD, iA);
-
-    // Shader
-    addRecipe(CookType::Quad);
-}
-
-void BaseScene::_Quad::setTexture(unsigned int texture_id) {
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-}
-
-void BaseScene::_Quad::draw() {
-    //screenShader.use();
-    //glBindVertexArray(quadVAO);
-
-    //glDrawArrays(GL_TRIANGLES, 0, 6);
-}

@@ -13,16 +13,17 @@ public:
 	Framebuffer(const Framebuffer&)				= delete;
 	Framebuffer(Framebuffer&&)					= delete;
 
-	bool usable() const;
+	static bool CurrIsUsable();
+
 	unsigned int id() const;
-	unsigned int textureId() const;
+	Texture& texture();
 
 	void resize(unsigned int width, unsigned int height);
 	unsigned int width() const;
 	unsigned int height() const;
 
-	void bind();
-	void unbind();
+	void bind() const;
+	void unbind() const;
 	virtual void clear(); // override if use different background color or utils buffers
 
 protected:

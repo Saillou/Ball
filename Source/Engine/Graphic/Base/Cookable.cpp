@@ -86,8 +86,8 @@ void Cookable::_set_shader_batch(UShader& shader) {
 void Cookable::_set_shader_solid(UShader& shader) {
     shader->
         attachSource(GL_VERTEX_SHADER, ShaderSource{}
-            .add_var("in", "vec3", "aPos")
-            .add_var("in", "vec3", "aNormal")
+            .add_var("layout (location = 0) in", "vec3", "aPos")
+            .add_var("layout (location = 1) in", "vec3", "aNormal")
 
             .add_var("uniform", "mat4", "Projection")
             .add_var("uniform", "mat4", "View")
@@ -148,7 +148,7 @@ void Cookable::_set_shader_solid(UShader& shader) {
 void Cookable::_set_shader_quad(UShader& shader) {
     shader->
         attachSource(GL_VERTEX_SHADER, ShaderSource{}
-            .add_var("in", "vec3", "aPos")
+            .add_var("layout (location = 0) in", "vec3", "aPos")
             .add_var("out", "vec2", "TexCoords")
             .add_func("void", "main", "", R"_main_(
                 gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);
@@ -159,10 +159,10 @@ void Cookable::_set_shader_quad(UShader& shader) {
         )
         .attachSource(GL_FRAGMENT_SHADER, ShaderSource{}
             .add_var("in", "vec2", "TexCoords")
-            .add_var("uniform", "sampler2D", "screenTexture")
+            .add_var("uniform", "sampler2D", "quadTexture")
             .add_var("out", "vec4", "FragColor")
             .add_func("void", "main", "", R"_main_(
-                FragColor = texture(screenTexture, TexCoords);
+                FragColor = texture(quadTexture, TexCoords);
             )_main_").str()
         );
 }

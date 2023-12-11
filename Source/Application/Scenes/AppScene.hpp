@@ -4,9 +4,8 @@
 #include <memory>
 
 #include "../../Engine/Graphic/Base/BaseScene.hpp"
-
-#include "Objects/Sphere.hpp"
-#include "Objects/Box.hpp"
+#include "../../Engine/Graphic/Base/Shapes/Sphere.hpp"
+#include "../../Engine/Graphic/Base/Shapes/Box.hpp"
 
 // -- Scene --
 struct AppScene : public BaseScene {

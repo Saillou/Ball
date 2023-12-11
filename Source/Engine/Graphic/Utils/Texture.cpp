@@ -41,5 +41,6 @@ void Texture::resize(unsigned int width, unsigned int height) {
 	m_width  = width;
 	m_height = height;
 
+	bind();
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 }

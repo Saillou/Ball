@@ -21,10 +21,6 @@ bool Window::update() {
     // To be called in the same thread as the m_window constructor
     glfwMakeContextCurrent(m_window);
 
-    // Cleanup previous draws
-    glClearColor(0.05f, 0.05f, 0.06f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     // Can't continue states
     if (!m_window)
         return false;

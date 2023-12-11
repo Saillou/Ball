@@ -147,6 +147,10 @@ FireScene::FireScene() :
 }
 
 void FireScene::draw() {
+    // Cleanup previous draws
+    BaseScene::clear();
+
+    // Update time
     static float t = 0.0f;
     const float dt = 0.016f;
 
