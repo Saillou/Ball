@@ -9,12 +9,8 @@ template <typename T>
 class StorageBuffer : public Buffer {
 public:
 	// Constructors
-	explicit StorageBuffer(unsigned int glMemoryType) : Buffer(GL_SHADER_STORAGE_BUFFER, glMemoryType) {
-
-	}
-	virtual ~StorageBuffer() {
-
-	}
+	explicit StorageBuffer(unsigned int glMemoryType) : Buffer(GL_SHADER_STORAGE_BUFFER, glMemoryType) { }
+	virtual ~StorageBuffer() = default;
 
 	StorageBuffer& operator=(const StorageBuffer&)	= delete;
 	StorageBuffer(const StorageBuffer&)				= delete;
