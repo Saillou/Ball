@@ -37,6 +37,7 @@ protected:
 	void _addAsTriangle(unsigned int i0, unsigned int i1, unsigned int i2);
 	void _addAsQuad(unsigned int i0, unsigned int i1, unsigned int i2, unsigned int i3);
 
+	void _createQuad(const glm::vec3& P0, const glm::vec3& P1, const glm::vec3& P2, const glm::vec3& P3);
 	void _createQuad(const glm::vec3& P0, const glm::vec3& P1, const glm::vec3& P2, const glm::vec3& P3, const glm::vec3& n);
 
 	Array m_vao;

@@ -3,20 +3,16 @@
 // - Quad -
 Quad::Quad()
 {
-    // Vertices
-    using v3 = glm::vec3;
-
-    int iA = _addPoint(v3(-1.0f, +1.0f, 0));
-    int iB = _addPoint(v3(-1.0f, -1.0f, 0));
-    int iC = _addPoint(v3(+1.0f, -1.0f, 0));
-    int iD = _addPoint(v3(+1.0f, +1.0f, 0));
-
-    _addAsTriangle(iA, iB, iC);
-    _addAsTriangle(iA, iC, iD);
-
+    // Shape
+    _createQuad(
+        glm::vec3(-1.0f, +1.0f, 0),
+        glm::vec3(-1.0f, -1.0f, 0),
+        glm::vec3(+1.0f, -1.0f, 0),
+        glm::vec3(+1.0f, +1.0f, 0)
+    );
     _bindArray();
 
-    // Shader
+    // Cook
     addRecipe(CookType::Quad);
 }
 
