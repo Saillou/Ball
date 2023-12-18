@@ -16,7 +16,7 @@ LearnScene::LearnScene() :
 
     // Objects
     m_texture = std::make_unique<Texture>("C:\\Dev\\Cpp\\Project_008-Ball\\Resources\\textures\\container.jpg");
-    m_quad = std::make_unique<Quad>();
+    m_quad = std::make_unique<Quad>(0.25f, 0.25f, 0.50f, 0.50f);
 }
 
 void LearnScene::draw() {
