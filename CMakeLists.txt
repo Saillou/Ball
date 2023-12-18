@@ -42,6 +42,7 @@ target_include_directories(${TARGET_NAME} PRIVATE
     "${EXTERNAL_FOLDER}/glm/"
     "${EXTERNAL_FOLDER}/glad/include/"
     "${EXTERNAL_FOLDER}/GLFW/include/"
+    "${EXTERNAL_FOLDER}/stb/"
     "${EXTERNAL_FOLDER}/freetype/include/"
     "${EXTERNAL_FOLDER}/reactphysics3d/include/"
 )
