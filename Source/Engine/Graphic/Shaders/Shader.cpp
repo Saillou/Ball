@@ -28,7 +28,7 @@ Shader& Shader::attachSource(const unsigned int shader_type, const std::string& 
     char infoLog[512];
     if (!success) {
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        std::cout << "Error: \n" << infoLog << std::endl;
+        std::cerr << "Error: \n" << infoLog << std::endl;
     } assert(success && "Fail to compile shader");
 
     glAttachShader(m_id, shader);
@@ -52,7 +52,7 @@ Shader& Shader::link() {
     char infoLog[512];
     if (!success) {
         glGetProgramInfoLog(m_id, 512, nullptr, infoLog);
-        std::cout << "Error: \n" << infoLog << std::endl;
+        std::cerr << "Error: \n" << infoLog << std::endl;
     } assert(success && "Fail to link shaders");
 
     return *this;

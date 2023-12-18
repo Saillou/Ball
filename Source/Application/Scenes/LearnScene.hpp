@@ -1,12 +1,7 @@
 #pragma once
 
-#include <vector>
-#include <memory>
-
 #include "../../Engine/Graphic/Base/BaseScene.hpp"
-#include "../../Engine/Graphic/Utils/Framebuffer.hpp"
-#include "../../Engine/Graphic/Base/Shapes/Sphere.hpp"
-#include "../../Engine/Graphic/Base/Shapes/Box.hpp"
+#include "../../Engine/Graphic/Base/Shapes/Quad.hpp"
 
 // -- Scene --
 struct LearnScene : public BaseScene {
@@ -16,5 +11,6 @@ struct LearnScene : public BaseScene {
     void _onResize() override;
 
 private:
-
+    std::unique_ptr<Texture> m_texture;
+    std::unique_ptr<Quad> m_quad;
 };

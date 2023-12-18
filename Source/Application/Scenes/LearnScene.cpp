@@ -15,13 +15,17 @@ LearnScene::LearnScene() :
     m_lights = {  };
 
     // Objects
-
+    m_texture = std::make_unique<Texture>("C:\\Dev\\Cpp\\Project_008-Ball\\Resources\\textures\\container.jpg");
+    m_quad = std::make_unique<Quad>();
 }
 
 void LearnScene::draw() {
     BaseScene::clear();
+
+    m_texture->bind();
+    m_quad->draw();
 }
 
 void LearnScene::_onResize() {
-    // . if you have framebuffer it may be the correct place to resize these.
+    // ..
 }

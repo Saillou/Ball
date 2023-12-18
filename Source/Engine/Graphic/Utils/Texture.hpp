@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
 #include <glad/glad.h>
 
 class Texture {
 public:
+	Texture(const std::string& image_path);
 	Texture(unsigned int width, unsigned int height, GLuint texture_type = GL_TEXTURE_2D);
 	virtual ~Texture();
 
@@ -18,7 +20,7 @@ public:
 	void bind();
 	void unbind();
 
-	void resize(unsigned int width, unsigned int height);
+	void resize(unsigned int width, unsigned int height, void* data = nullptr);
 
 protected:
 	unsigned int m_textureId;
